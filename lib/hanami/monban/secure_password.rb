@@ -1,3 +1,5 @@
+require 'rom-changeset'
+
 require_relative './hashed_password'
 
 module Hanami::Monban
