@@ -18,11 +18,11 @@ module Hanami::Monban
       @current_user ||= @user_source.find(session[:user_id])
     end
 
-    def login(id)
-      session[:user_id] = id
+    def login
+      session[:user_id] = current_user.id
     end
 
-    def logout(id)
+    def logout
       session[:user_id] = nil
     end
 
