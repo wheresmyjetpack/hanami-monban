@@ -1,7 +1,5 @@
 require "hanami/monban/version"
 
-module Hanami
-  module Monban
-    # Your code goes here...
-  end
-end
+require 'monban/auth'
+require 'monban/skip_auth'
+require 'monban/secure_password'
