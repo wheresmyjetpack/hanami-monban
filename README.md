@@ -1,6 +1,6 @@
 # Hanami::Monban
 
-*Hanami::Monban* is an authorization plugin writter for the Hanami web framework.
+**Hanami::Monban** is an authentication wrapper written for the Hanami web framework. It features session-based authentication as well as secure password-hashing and storage.
 
 ## Installation
 
@@ -17,10 +17,49 @@ And then execute:
 Or install it yourself as:
 
     $ gem install hanami-monban
+    
+If the majority of your actions will require session-based authentication running in before-hooks, add to / modify the controller configuration block in your app's `application.rb`
+
+```ruby
+controller.prepare do
+  include Hanami::Monban::Auth
+  before :authenticate!
+end
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+### Sessions
+
+To **login** a `user`, simply
+
+```ruby
+login(user)
+```
+
+And to **logout**
+
+```ruby
+logout
+```
+
+To get the user stored by the current session
+
+```ruby
+current_user
+```
+You can conventiently ask if the session is currently authenticated by
+
+```ruby
+authenticated?
+```
+
+To tell the system to authenticate (and redirect if that's impossible)
+
+```ruby
+authenticate!
+```
+which will redirect to a route named `sign_in_path`. This route may be customized.
 
 ## Development
 
@@ -36,4 +75,5 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+
 
