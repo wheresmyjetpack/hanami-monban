@@ -1,3 +1,5 @@
+require_relative './hashed_password'
+
 module Hanami::Monban
   module Auth
     private
@@ -18,12 +20,16 @@ module Hanami::Monban
       @current_user ||= @user_source.find(session[:user_id])
     end
 
-    def login
-      session[:user_id] = current_user.id
+    def login(user)
+      session[:user_id] = user.id
     end
 
     def logout
       session[:user_id] = nil
+    end
+
+    def valid_password?(user)
+      HashedPassword.from(user.password_hash) == params[:user][:password]
     end
 
     def sign_in_route

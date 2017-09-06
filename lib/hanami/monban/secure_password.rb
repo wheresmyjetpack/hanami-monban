@@ -1,3 +1,5 @@
+require_relative './hashed_password'
+
 module Hanami::Monban
   module SecurePassword
     def create_secure(user_data)
@@ -8,9 +10,7 @@ module Hanami::Monban
 
     class NewSecureUser < ROM::Changeset::Create
       map do |tuple|
-        tuple.merge(
-          password_hash: BCrypt::Password.create(tuple.delete(:password))
-        )
+        tuple.merge(password_hash: HashedPassword.hashed(tuple.delete(:password)))
       end
     end
   end
