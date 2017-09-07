@@ -104,6 +104,24 @@ To check if a password coming from the `params[:user]` hash matches the password
 valid_password?(user)
 ```
 
+### Configuration
+
+`hanami-monban` comes configured with some sane defaults that make some assumptions about how your application is set up.
+
+- The default path to redirect visitors to when they are not authenticated is `routes.sign_in_path`
+- When setting the `current_user`, it is assumed that `hanami-monban` should use the `UserRepository` class to read from
+
+These settings may be configured to suite your app's needs if they differ from the defaults.
+
+In an initializer
+
+```ruby
+Hanami::Monban.configure do |config|
+  config.sign_in_route = :foobar_path
+  config.user_source = :BazQuxRepository
+end
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
