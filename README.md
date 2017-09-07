@@ -74,7 +74,7 @@ module Web::Controllers::Sessions
 end
 ```
 
-`.skip_auth` will add some no-op methods to the action will which prevent the authenticate callback from logging the current user out.
+`.skip_auth` will add some no-op methods to the action which will prevent the authenticate callback from logging the current user out.
 
 ### Secure Passwords
 
