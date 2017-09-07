@@ -1,4 +1,4 @@
-require 'rom-changeset'
+require 'rom/repository/changeset'
 
 require_relative './hashed_password'
 

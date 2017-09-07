@@ -6,6 +6,12 @@ require 'hanami/monban/secure_password'
 module Hanami
   module Monban
     module Auth
+      def self.included(controller)
+        controller.class_eval do
+          before :authenticate!
+        end
+      end
+
       private
 
       def authenticate!
@@ -54,7 +60,6 @@ module Hanami
 
     def self.session_auth
       include Auth
-      before :authenticate!
     end
 
     def self.configure
@@ -72,7 +77,7 @@ module Hanami
         @user_source = :UserRepository
       end
 
-      attr_accessor :sign_in_path, :user_source
+      attr_accessor :sign_in_route, :user_source
     end
   end
 end
