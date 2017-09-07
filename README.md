@@ -30,6 +30,8 @@ end
 
 ### Sessions
 
+If you haven't already, [enable the Rack session middleware for your app](http://hanamirb.org/guides/1.0/actions/sessions/).
+
 To **login** a `user`, simply
 
 ```ruby
@@ -78,7 +80,7 @@ end
 
 This feature requires your to store a field called `password_hash` associated to your user. In the case of an application backed by a relational database, this means adding a migration to add the `password_hash` field to your users table.
 
-Instead of persisting a plain text password to disk, store the a hash of the password. `include` `Hanami::Monban::SecurePassword` in your `UserRepository`.
+Instead of persisting a plain text password to disk, store a hash of the password. `include` `Hanami::Monban::SecurePassword` in your `UserRepository`.
 
 ```ruby
 UserRepository < Hanami::Repository
@@ -95,6 +97,12 @@ repo.create_secure(username: 'UlrichLeeche', password: 'lizardtail')
 ```
 
 This will save the password `'lizardtail'` as a hash in your data store, preventing someone who obtains a copy of your database from having the plain text password of every one of your users.
+
+To check if a password coming from the `params[:user]` hash matches the password for a particular `user`
+
+```ruby
+valid_password?(user)
+```
 
 ## Development
 
