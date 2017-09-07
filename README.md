@@ -23,7 +23,6 @@ If the majority of your actions will require session-based authentication runnin
 ```ruby
 controller.prepare do
   include Hanami::Monban::Auth
-  before :authenticate!
 end
 ```
 
@@ -67,13 +66,13 @@ If you've `include`ed `Hanami::Monban::Auth` in all actions by default (as in th
 module Web::Controllers::Sessions
   class New
     include Web::Action
-    include Hanami::Monban::SkipAuth
+    skip_auth
     ...
   end
 end
 ```
 
-This will add some no-op methods to the action will which prevent the authenticate callback from logging the current user out.
+`.skip_auth` will add some no-op methods to the action will which prevent the authenticate callback from logging the current user out.
 
 ### Secure Passwords
 
@@ -88,7 +87,7 @@ UserRepository < Hanami::Repository
 end
 ```
 
-This will add `#create_secure` to the `UserRepository`, which should always be used in place of the standard `#create`. 
+This will add `#create_secure` to the `UserRepository`, which should always be used in place of the standard `#create`.
 
 ```ruby
 repo = UserRepository.new
