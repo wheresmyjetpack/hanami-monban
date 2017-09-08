@@ -5,7 +5,6 @@ describe Hanami::Monban::Auth do
   include_context 'with controller double'
 
   before do
-    stub_const('HashedPassword', double('password hasher', from: 'password'))
     stub_const('UserRepository', double('the user source constant', new: user_source))
   end
 
@@ -65,11 +64,11 @@ describe Hanami::Monban::Auth do
 
       context 'when there is a current user' do
         let(:logged_in_user) { :user }
-        it { is_expected.to be(true) }  
+        it { is_expected.to be(true) }
       end
 
       context 'when there is no current user' do
-        it { is_expected.to be(false) }  
+        it { is_expected.to be(false) }
       end
     end
 
@@ -89,7 +88,7 @@ describe Hanami::Monban::Auth do
     describe '#login' do
       before do
         @controller = controller_with_auth.new
-        @controller.login(user) 
+        @controller.login(user)
       end
 
       let(:user) { double('a user', id: 1) }
@@ -102,7 +101,7 @@ describe Hanami::Monban::Auth do
     describe '#logout' do
       before do
         @controller = controller_with_auth.new
-        @controller.login(user) 
+        @controller.login(user)
         @controller.logout
       end
 
@@ -110,6 +109,33 @@ describe Hanami::Monban::Auth do
 
       it 'expires the session for the user' do
         expect(@controller.session[:user_id]).to be_nil
+      end
+    end
+
+    describe '#valid_password?' do
+      before do
+        stub_const('Hanami::Monban::HashedPassword', double('password hasher', from: 'password'))
+        @controller = controller_with_auth.new.tap do |dbl|
+          dbl.params = controller_params
+        end
+      end
+
+      let(:user) { double('a user', password_hash: 'a hashed password') }
+      subject { @controller.valid_password?(user) }
+
+      context 'when the passwords match' do
+        it { is_expected.to be(true) }
+      end
+
+      context 'when the passwords do not match' do
+        let(:controller_params) { {user: {password: 'bad password'}} }
+        it { is_expected.to be(false) }
+      end
+
+      describe 'the user entity' do
+        before { @controller.valid_password?(user) }
+        subject { user }
+        it { is_expected.to have_received(:password_hash) }
       end
     end
   end
