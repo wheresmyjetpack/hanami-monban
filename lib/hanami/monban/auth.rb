@@ -15,6 +15,7 @@ module Hanami::Monban
 
     def authenticate!
       unless authenticated?
+        # TODO set some of this up during configuration
         login_warning || flash[:warning] = 'Please sign in'
         redirect_to sign_in_route
       end
@@ -37,7 +38,7 @@ module Hanami::Monban
     end
 
     def valid_password?(user)
-      HashedPassword.from(user.password_hash) == params[:user][:password]
+      from_hash(user.password_hash) == params[:user][:password]
     end
 
     private
@@ -47,7 +48,11 @@ module Hanami::Monban
     end
 
     def user_source
-      @user_source ||= Hanami::Monban.const_get(Hanami::Monban.configuration.user_source)
+      @user_source ||= Hanami::Monban.const_get(Hanami::Monban.configuration.user_source).new
+    end
+
+    def from_hash(password_hash)
+      HashedPassword.from(password_hash)
     end
 
     def login_warning
