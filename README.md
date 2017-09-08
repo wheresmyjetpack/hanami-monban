@@ -49,7 +49,7 @@ To get the user stored by the current session
 ```ruby
 current_user
 ```
-You can conventiently ask if the session is currently authenticated by
+You can conveniently ask if the session is currently authenticated by
 
 ```ruby
 authenticated?
